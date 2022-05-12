@@ -1,12 +1,20 @@
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
-let gameOver = false;
+canvas.style.border = '2px solid black'
+canvas.style.backgroundColor = "#302c2c";
+
+let move = false;
 let carX = 250;
 let intervalId = 0;
-canvas.style.border = '2px solid black'
+
 let isGoingLeft = false;
 let isGoingRight = false;
-let carSpeedValue = 3;
+let carSpeedValue = 7;
+
+let topToButom = 0;
+let topToButomTwo = 0;
+let topToButomThree = 0;
+let score = 0;
 
 let roadImg = new Image ()
 roadImg.src = '../images/road.png'
@@ -27,25 +35,74 @@ window.onload = () => {
 
   function startGame() {
     displayScreen.style.display = 'none'
-    canvas.style.display = 'block'
+    canvas.style.display = 'flex'
     ctx.drawImage(roadImg, 0, 0, canvas.width, canvas.height)
-    ctx.drawImage(carImage, carX, 450, 100, 200)
+    ctx.drawImage(carImage, carX, 450, 80, 160)
+    ctx.beginPath();
+    
+    ctx.fillStyle = "red";
+    ctx.fillRect(30, topToButom, 120, 20);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(180, topToButomTwo, 150, 20);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.fillRect(380, topToButomThree, 100, 20);
+    ctx.closePath();
+
+    topToButom += 2.7
+    if(topToButom >= 700) {
+      topToButom = 0
+    }
+
+    topToButomTwo += 2.4
+    if(topToButomTwo >= 700) {
+      topToButomTwo = 0
+    }
+
+    topToButomThree += 3.3
+    if(topToButomThree >= 700) {
+      topToButomThree = 0
+    }
+
 
     if (isGoingLeft) {
       if (carX > 0) {
         carX -= carSpeedValue;
       }
     } else if (isGoingRight) {
-      if (carX < canvas.width - 250) {
+      if (carX < canvas.width - 100) {
         carX += carSpeedValue;
       }
     }
-    if(gameOver === false) {
+    if(move === false) {
       requestAnimationFrame(startGame);
     } 
   }
 };
 
+function drawScore() {
+  ctx.beginPath();
+  ctx.font = "30px sans-serif";
+  ctx.fillStyle = "green";
+  ctx.fillText(`Score : ${score}`, 10, 30);
+  ctx.closePath();
+}
+
+
+function restart() {
+  carX = 150;
+  carY = 170;
+  gameOver = false;
+  score = 0;
+  carDirectionX = carSpeedValue;
+  carDirectionY = carSpeedValue;
+  start();
+}
 
 
 function draw() {
@@ -67,3 +124,25 @@ document.addEventListener("keyup", event => {
   isGoingLeft = false;
   isGoingRight = false;
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
